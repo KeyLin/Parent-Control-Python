@@ -1,0 +1,2 @@
+# Parent_Control_Python
+用python实现的简单家长控制功能
