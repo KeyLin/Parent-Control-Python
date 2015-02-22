@@ -24,16 +24,21 @@ def send_mail(mail_host,mail_sender,mail_pass,mail_postfix,mail_receivers,sub,co
         server.close()  
         return True  
     except Exception, e:  
-        print str(e)  
+        #print str(e)  
         return False
 
 def send_sms(sender,passwd,receivers,message):
     url="http://quanapi.sinaapp.com/fetion.php?u="+sender+"&p="+passwd+"&to="+receivers+"&m="+message
-    result= json.loads(urllib2.urlopen(url).read())
-    if result["result"]==0:
-        return True
-    else:
+    try:  
+        result= json.loads(urllib2.urlopen(url).read())
+        if result["result"]==0:
+            return True
+        else:
+            return False  
+    except Exception, e:  
+        #print str(e)  
         return False
+
 
 def time_control(timeLimit):
     #判断文件是否存在
@@ -92,8 +97,9 @@ def main():
     sms_sender = config.get('SMS','sms_sender')
     feixin_pass = config.get('SMS','feixin_pass')
     sms_receivers = config.get('SMS','sms_receivers')
-    while send_sms(sms_sender,feixin_pass,sms_receivers,message):
-        print "sending sms"
+    while send_sms(sms_sender,feixin_pass,sms_receivers,message)==False:
+        print ".",
+        time.sleep(3)
         pass
     print "Send SMS Successfully"
 
@@ -102,9 +108,9 @@ def main():
     mail_host = config.get('Mail','mail_host')
     mail_receivers = config.get('Mail','mail_receivers')
     mail_postfix = config.get('Mail','mail_postfix')
-
-    while send_mail(mail_host,mail_sender,mail_pass,mail_postfix,mail_receivers,message,message):
-        print "sending mail"
+    while send_mail(mail_host,mail_sender,mail_pass,mail_postfix,mail_receivers,message,message)==False:
+        print ".",
+        time.sleep(3)
         pass
     print "Send Mail Successfully"
     
