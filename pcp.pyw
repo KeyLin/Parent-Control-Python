@@ -36,7 +36,7 @@ def send_sms(sender,passwd,receivers,message):
         return False
 
 def time_control(timeLimit):
-        #判断文件是否存在
+    #判断文件是否存在
     if os.path.exists('.\\timeRecord.txt') == False:
         f = open('.\\timeRecord.txt', 'w')
         f.close
