@@ -1,0 +1,2 @@
+021/02/2015
+n = "XXX在" + time.strftime('%H:%M',time.localtime(time.time())) + "打开了电脑"
