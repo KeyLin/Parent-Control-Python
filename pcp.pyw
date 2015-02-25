@@ -78,6 +78,11 @@ def time_control(timeLimit):
             f.close
         else:
             break
+
+    while send_sms(sms_sender,feixin_pass,sms_receivers,"今天的上机时间用完了")==False:
+        print ".",
+        time.sleep(3)
+        pass
     #关机命令       
     cmd = "cmd.exe /k shutdown -s -t 0";
     #执行关机命令
