@@ -10,17 +10,19 @@ import json
 import ConfigParser  
 from email.mime.text import MIMEText 
   
-def send_mail(mail_host,mail_sender,mail_pass,mail_postfix,mail_receivers,sub,content):  
-    sender="notify"+"<"+mail_sender+"@"+mail_postfix+">"  
+def send_mail(mail_host,mail_sender,mail_pass,mail_receivers,sub,content):  
+    sender="Notify"+"<"+mail_sender+">"  
     msg = MIMEText(content,_subtype='plain',_charset='utf-8')  
     msg['Subject'] = sub  
     msg['From'] = sender  
-    msg['To'] = ";".join(mail_receivers)  
+    msg['To'] = mail_receivers 
     try:  
         server = smtplib.SMTP()  
         server.connect(mail_host)  
-        server.login(mail_sender, mail_pass)  
-        server.sendmail(sender, mail_receivers, msg.as_string())  
+        server.login(mail_sender, mail_pass)
+        mail_receivers = mail_receivers.split(";")
+        for receiver in mail_receivers:  
+            server.sendmail(sender, receiver, msg.as_string())  
         server.close()  
         return True  
     except Exception, e:  
@@ -112,8 +114,7 @@ def main():
     mail_pass = config.get('Mail','mail_pass')
     mail_host = config.get('Mail','mail_host')
     mail_receivers = config.get('Mail','mail_receivers')
-    mail_postfix = config.get('Mail','mail_postfix')
-    while send_mail(mail_host,mail_sender,mail_pass,mail_postfix,mail_receivers,message,message)==False:
+    while send_mail(mail_host,mail_sender,mail_pass,mail_receivers,message,message)==False:
         print ".",
         time.sleep(3)
         pass
